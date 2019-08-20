@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Tailwind Traders Status</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+    body {
+      padding-top: 3.5rem;
+    }
+    .jumbotron {
+      border-radius: 0px;
+      color: #fff;
+    }
+    .jumbotron.incident-active {
+      background-color: rgb(235, 128, 46);
+    }
+    .jumbotron.incident-inactive {
+      background-color: rgb(60, 168, 60);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">Tailwind Traders Status</a>
+  </nav>
+
+  <main role="main" id="app" v-cloak>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron" :class="{ 
+      'incident-active': (!loading && isIncidentActive),
+      'incident-inactive': (!loading && !isIncidentActive)
+    }">
+      <div class="container" v-if="!loading">
+        <h1 v-if="isIncidentActive" class="display-3">Whoops!</h1>
+        <h1 v-else class="display-3">Everything is okay!</h1>
+      </div>
+    </div>
+  
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-12">
+          <div v-if="isIncidentActive">
+            <h2>Active Incident</h2>
+            <hr />
+            <div v-for="status in activeIncident.statuses">
+              <small class="text-muted">{{ status.timestamp }} - {{ status.type }} - {{ status.from }}</small>
+              <p>{{ status.text | formatStatusText }}</p>
+              <hr />
+            </div>
+          </div>
+
+          <div v-if="!isIncidentActive">
+            <h2>History</h2>
+            <hr />
+            <div v-for="incident in pastIncidents">
+              <div v-for="status in incident.statuses">
+                <small class="text-muted">{{ status.timestamp }} - {{ status.type }} - {{ status.from }}</small>
+                <p>{{ status.text | formatStatusText }}</p>
+              </div>              
+              <hr />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /container -->
+  
+  </main>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.19.0/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@3.0.0-preview8.19405.7/dist/browser/signalr.min.js"></script>
+  <script>
+    const apiBaseUrl = 'http://localhost:7071'
+
+    const app = new Vue({
+      el: '#app',
+      data: {
+        statuses: [],
+        loading: true
+      },
+      mounted: function() {
+        return axios.get(`${apiBaseUrl}/api/statuses`).then(function (resp) {
+          this.statuses = resp.data
+          this.loading = false
+        }.bind(this))
+      },
+      computed: {
+        isIncidentActive: function() {
+          const latestStatus = this.statuses[0] || {}
+          return latestStatus.type !== 'close' 
+        },
+        incidents: function() {
+          const incidents = []
+          let incidentStatuses = []
+          for (const status of this.statuses) {
+            incidentStatuses.push(status)
+            if (status.type === 'open') {
+              incidents.push({
+                isActive: (this.isIncidentActive && incidents.length === 0),
+                statuses: incidentStatuses
+              })
+              incidentStatuses = []
+            }
+          }
+          return incidents
+        },
+        activeIncident: function() {
+          return this.incidents.find(i => i.isActive) || {}
+        },
+        pastIncidents: function() {
+          return this.incidents.filter(i => !i.isActive)
+        }
+      },
+      filters: {
+        formatStatusText: function(txt) {
+          return txt || 'No text entered.'
+        }
+      }
+    })
+  </script>
+</body>
+</html>
