@@ -29,6 +29,12 @@ module.exports = async function (context, req, latestStatuses) {
     // save to Table Storage
     context.bindings.status = status;
 
+    // broadcast new status over Azure SignalR Service
+    context.bindings.signalRMessage = {
+        target: 'newStatus',
+        arguments: [ status ]
+    };
+
     // return message to Teams
     context.res.json({
         "type": "message",

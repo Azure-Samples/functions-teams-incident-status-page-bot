@@ -29,6 +29,12 @@
       "tableName": "statuses",
       "take": "1",
       "connection": "AzureWebJobsStorage"
+    },
+    {
+      "type": "signalR",
+      "direction": "out",
+      "name": "signalRMessage",
+      "hubName": "tailwindstatus"
     }
   ]
 }

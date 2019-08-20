@@ -90,7 +90,21 @@
         return axios.get(`${apiBaseUrl}/api/statuses`).then(function (resp) {
           this.statuses = resp.data
           this.loading = false
+          
+          this.connection = new signalR.HubConnectionBuilder()
+            .withUrl(`${apiBaseUrl}/api`)
+            .withAutomaticReconnect()
+            .build()
+          this.connection.on('newStatus', function(status) {
+            this.statuses.unshift(status)
+          }.bind(this))
+          this.connection.start()
         }.bind(this))
+      },
+      destroy: function() {
+        if (this.connection) {
+          this.connection.stop()
+        }
       },
       computed: {
         isIncidentActive: function() {
