@@ -26,6 +26,10 @@
         "siteConfig": {
           "appSettings": [
             {
+              "name": "PROJECT",
+              "value": "src/functions-javascript"
+            },
+            {
               "name": "FUNCTIONS_WORKER_RUNTIME",
               "value": "node"
             },
