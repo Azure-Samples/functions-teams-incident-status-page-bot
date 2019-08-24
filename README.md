@@ -63,13 +63,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-
-# Teams incident status bot
-
-[![Deploy to Azure](https://azuredeploy.net/deploybutton.svg)](https://azuredeploy.net/)
-
-![demo](tailwind-incident-bot.gif)
-
+    
 # Teams incident status bot
 
 ![demo](tailwind-incident-bot.gif)
@@ -90,7 +84,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
     Use `StatusPage` as the bot name (this is hardcoded, for now). Paste in the function URL, and enter a description.
 
-    ![Webhook details](webhook-details.png)
+    ![Webhook details](webhook-info.png)
 
     You will be prompted with a secret code for validating webhook calls from Teams. We currently do not use this. Close the dialog box.
-    
