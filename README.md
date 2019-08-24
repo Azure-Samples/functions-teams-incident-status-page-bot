@@ -63,7 +63,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-    
+
 # Teams incident status bot
 
 ![demo](tailwind-incident-bot.gif)
@@ -73,6 +73,8 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 - Create the Azure Function app, Storage account, and SignalR Service with this button: [![Deploy to Azure](https://azuredeploy.net/deploybutton.svg)](https://azuredeploy.net/)
 
 - Incident statuses are stored in a table in the Storage account, but there's no way to create this table with ARM. In the Azure portal, open the Storage account and add a table named `statuses`.
+
+    ![Create table](create-table.png)
 
 - Now navigate to the function app, and open the `teams-webhook` function. Click "Get Function URL" and copy the URL.
 
