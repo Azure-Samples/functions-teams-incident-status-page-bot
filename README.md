@@ -10,7 +10,7 @@ description: "Simple Azure Functions bot for managing incidents from Microsoft T
 urlFragment: "functions-teams-incident-status-page-bot"
 ---
 
-# Official Microsoft Sample
+# Teams incident status bot
 
 <!-- 
 Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
